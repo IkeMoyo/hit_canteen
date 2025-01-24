@@ -1,0 +1,44 @@
+{% extends 'canteen/base.html' %}
+
+{% load static %}
+
+{% block title %}Checkout {% endblock %}
+
+{% block header %}Checkout {% endblock %}
+
+{% block content %}
+
+{% for message in messages %}
+	{{message | safe}}
+{% endfor %}
+<div class="col">
+	<div class="box-element">
+		<a  class="btn btn-outline-dark rounded-2" href="{% url 'cart' %}">&#x2190; Back to Cart</a>
+		<hr>
+		{% for item in items %}
+		<div class="cart-row">
+			<div style="flex:2"><img class="row-image" src="{{item.product.imageURL}}"></div>
+			<div style="flex:2"><p>{{item.product.name}}</p></div>
+			<div style="flex:1"><p>${{item.product.price|floatformat:2}}</p></div>
+			<div style="flex:1"><p>x{{item.quantity}}</p></div>
+		</div>
+		{% endfor %}
+		<h5>Items:   {{order.get_cart_items}}</h5>
+		<h5>Total:   $<span class="total">{{order.get_cart_total|floatformat:2}}</span></h5>
+	</div>
+
+	<form action="{% url 'process_order' %}" method="Post">
+		{% csrf_token %}
+		<input type="number" name="order_id" value="{{order.id}}" class="hidden"><br>
+		<input type="number" name="total" value="{{order.get_cart_total|floatformat:2}}" class="hidden"><br>
+		<div class="box-element" id="payment-info">
+		<button class="btn btn-outline-success rounded-2" type="submit">Make payment</button>
+		<div id="paypal-button-container"></div>
+	</div>
+	</form>
+</div>
+
+{% endblock %}
+
+
+ 
