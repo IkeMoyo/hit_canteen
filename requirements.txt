@@ -1,5 +1,5 @@
 django
-psycopg
+# psycopg - For postgres database
 matplotlib
 seaborn
 numpy
